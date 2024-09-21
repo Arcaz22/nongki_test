@@ -19,6 +19,13 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+
   app:
     build:
       context: .
@@ -30,6 +37,7 @@ services:
       - '3000:3000'
     depends_on:
       - db
+      - redis
     volumes:
       - ./src:/app/src
     command: npm run start:dev

@@ -5,11 +5,13 @@ import { AppConfigModule } from './infrastructure/config.module';
 import { DatabaseModule } from './infrastructure/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
+import { RedisConfigModule } from './infrastructure/redis.module';
 
 @Module({
     imports: [
         AppConfigModule,
         DatabaseModule,
+        RedisConfigModule,
         AuthModule,
         UserModule
     ],

@@ -7,12 +7,14 @@ import { NewUserDTO } from "./dto/new-user.dto"
 import { checkUserExistsByEmail, comparePassword, hashPassword } from "src/common/utils/user.utils"
 import { ERROR_MESSAGES } from "src/common/utils/constants"
 import { LoginDTO } from "./dto/login.dto"
+import { RedisService } from "src/infrastructure/service/redis.service"
 
 @Injectable()
 export class AuthService {
     constructor(
         @InjectRepository(User) protected readonly userRepository: Repository<User>,
         private readonly jwtService: JwtService,
+        private readonly redisService: RedisService
     ) {}
 
     async register(newUser: NewUserDTO): Promise<User> {
@@ -63,5 +65,20 @@ export class AuthService {
             },
             access_token
         };
+    }
+
+    async isTokenBlacklisted(token: string): Promise<boolean> {
+        const isBlacklisted = await this.redisService.get(`blacklist:${token}`);
+        return !!isBlacklisted;
+    }
+
+    async logout(token: string): Promise<void> {
+        const payload = this.jwtService.decode(token) as any;
+        if (payload && payload.exp) {
+            const ttl = payload.exp - Math.floor(Date.now() / 1000);
+            await this.redisService.set(`blacklist:${token}`, 'true', ttl);
+        } else {
+            throw new UnauthorizedException("Invalid token");
+        }
     }
 }

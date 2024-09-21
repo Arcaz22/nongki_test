@@ -7,6 +7,7 @@ export const SUCCESS_MESSAGES = {
     PROFILE_CREATED: 'Profile created successfully',
     USER_DELETED: 'User deleted successfully',
     USER_FETCHED: 'User fetched successfully',
+    PROFILE_UPDATED: 'Profile updated successfully',
 };
 
 export const ERROR_MESSAGES = {
@@ -15,4 +16,5 @@ export const ERROR_MESSAGES = {
     USER_NOT_FOUND: 'User not found',
     PROFILE_ALREADY_EXISTS: 'Profile already exists',
     PROFILE_NOT_FOUND: 'Profile not found',
+    TOKEN_BLACKLISTED: 'Token has been blacklisted',
 };

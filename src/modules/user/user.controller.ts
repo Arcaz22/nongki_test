@@ -9,7 +9,6 @@ import { SUCCESS_MESSAGES } from "src/common/utils/constants";
 import { AuthGuard } from '@nestjs/passport';
 import { QueryDTO } from "src/common/dto/query.dto";
 import { User } from "src/common/entities/user.entity";
-
 @ApiTags('User')
 @Controller('user')
 @ApiBearerAuth('JWT')
@@ -51,7 +50,7 @@ export class UserController {
         const updatedProfile = await this.userService.updateProfile(userId, profileData);
         return new BaseResponse<Profile>(
             HttpStatus.OK,
-            "Profile updated successfully",
+            SUCCESS_MESSAGES.PROFILE_UPDATED,
             updatedProfile
         );
     }
